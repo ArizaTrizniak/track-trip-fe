@@ -1,0 +1,9 @@
+.canvas-container {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.canvas-editor {
+    border: 2px solid #333;
+    box-sizing: border-box;
+}
