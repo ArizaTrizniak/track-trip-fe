@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import type {ToolType, Point, Road} from '../model/types';
-import { useGraphModel } from '../hooks/useGraphModel';
+import { useGraphStore } from '../store/graphStore';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../model/constants';
 import {ExportImageButton} from "./ExportImageButton.tsx";
 
@@ -11,15 +11,14 @@ interface CanvasEditorProps {
 }
 
 export const CanvasEditor: React.FC<CanvasEditorProps> = ({ tool }) => {
-    const {
-        points,
-        setPoints,
-        roads,
-        setRoads,
-        getModel,
-        setModel,
-        clearModel,
-    } = useGraphModel();
+
+    const points = useGraphStore(state => state.points);
+    const roads = useGraphStore(state => state.roads);
+    const setPoints = useGraphStore(state => state.setPoints);
+    const setRoads = useGraphStore(state => state.setRoads);
+    const setModel = useGraphStore(state => state.setModel);
+    const getModel = useGraphStore(state => state.getModel);
+    const clearModel = useGraphStore(state => state.clearModel);
 
     const [draggedPointId, setDraggedPointId] = useState<number | null>(null);
     const [draftRoadStartId, setDraftRoadStartId] = useState<number | null>(null);
@@ -39,8 +38,7 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ tool }) => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         if (x < 0 || y < 0 || x > rect.width || y > rect.height) return;
-
-        setPoints((prev) => [...prev, { id: idCounter++, x, y }]);
+        setPoints([...points, { id: idCounter++, x, y }]);
         setDragFromPalette(false);
     };
 
@@ -61,7 +59,7 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ tool }) => {
             const y = e.clientY - rect.top;
             const endPoint = points.find(p => isInsidePoint(p, x, y));
             if (endPoint && endPoint.id !== draftRoadStartId) {
-                setRoads((prev) => [...prev, { id: idCounter++, startId: draftRoadStartId, endId: endPoint.id }]);
+                setRoads([...roads, { id: idCounter++, startId: draftRoadStartId, endId: endPoint.id }]);
             }
             setDraftRoadStartId(null);
         }
@@ -81,9 +79,9 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ tool }) => {
         if (!rect) return;
         const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
         const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
-        setPoints(points =>
-            points.map(p => p.id === draggedPointId ? { ...p, x, y } : p)
-        );
+        setPoints(points.map(p =>
+            p.id === draggedPointId ? { ...p, x, y } : p
+        ));
     };
 
     const handleMouseUp = () => {
