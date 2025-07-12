@@ -17,10 +17,17 @@ export interface Road {
     type?: string;
 }
 
+export interface Background {
+    id: string;
+    previewUrl: string;
+    originalUrl: string;
+}
+
 export interface GraphModel {
     width: number;
     height: number;
     points: Point[];
     roads: Road[];
     backgroundColor?: string;
+    backgroundId?: string;
 }

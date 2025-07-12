@@ -1,9 +1,11 @@
 import type { GraphModel } from '../model/types';
+import {API} from "./config.ts";
 
-const DEFAULT_ENDPOINT = 'http://localhost:3000/image';
+const ENDPOINT = new URL('image', API).toString();
 
 export async function downloadGraphImage(model: GraphModel,
-                                         endpoint = DEFAULT_ENDPOINT) {
+                                         endpoint = ENDPOINT): Promise<void> {
+
     const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
