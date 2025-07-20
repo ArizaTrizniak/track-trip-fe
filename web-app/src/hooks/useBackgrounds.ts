@@ -8,7 +8,7 @@ export function useBackgrounds() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const ENDPOINT = new URL('backgrounds', API).toString();
+        const ENDPOINT = new URL('background', API).toString();
         fetch(ENDPOINT)
             .then(res => res.json())
             .then(data => setBackgrounds(data))

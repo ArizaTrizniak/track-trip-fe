@@ -19,7 +19,7 @@ export const BackgroundLayer: React.FC<Props> = () => {
         const img = new window.Image();
         img.crossOrigin = "anonymous";
         img.onload = () => setBgImage(img);
-        img.src = SERVER + "/backgrounds/" + backgroundId;
+        img.src = SERVER + "backgrounds/" + backgroundId;
     }, [backgroundId]);
 
     useEffect(() => {

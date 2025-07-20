@@ -1,2 +1,2 @@
 # track-trip-fe
-# Frontend приложение для визуализации маршрута путешествия в виде картинки или видео.
+# Frontend application for visualizing a travel route as a picture or video.
